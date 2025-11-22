@@ -11,9 +11,9 @@ from sklearn.compose import make_column_transformer
 import joblib
 import mlflow
 from huggingface_hub import login, HfApi, hf_hub_download
-#tok = os.getenv("HF_TOKEN")
+tok = os.getenv("HF_TOKEN")
 #from google.colab import userdata
-tok = userdata.get('HF_TOKEN')
+#tok = userdata.get('HF_TOKEN')
 
 api = HfApi(token = tok)
 
@@ -54,7 +54,7 @@ y_train = pd.read_csv(hf_hub_download(repo_id=repo_id, filename=y_train_fname, r
 y_test = pd.read_csv(hf_hub_download(repo_id=repo_id, filename=y_test_fname, repo_type=repo_type))
 
 preprocessor = make_column_transformer(
-    (StandardScaler(), numerical_features), (OneHotEncoder(handle_unknown=ignore), categorical_features)
+    (StandardScaler(), numerical_features), (OneHotEncoder(handle_unknown='ignore'), categorical_features)
 )
 
 param_grid = {
@@ -72,15 +72,18 @@ model = xgb.XGBClassifier(scale_pos_weight=class_weight, random_state=1)
 
 pipeline = make_pipeline( preprocessor, model)
 
-print(pipeline.get_feature_names_out())
+#print(pipeline.get_feature_names_out())
 
 with mlflow.start_run():
     random_cv= RandomizedSearchCV(pipeline, param_grid, cv=5, n_jobs=-1)
     random_cv.fit(x_train, y_train)
-    
+    #pipeline.fit(x_train, y_train)
+    #print(pipeline[:-1].get_feature_names_out())
+
     best_params = random_cv.best_params_
     mlflow.log_params(best_params)
     best_model = random_cv.best_estimator_
+    print(best_model.feature_names_in_)
     #print(best_model.get_params())
     y_pred = best_model.predict(x_test)
     train_report = classification_report(y_train, best_model.predict(x_train), output_dict=True)
