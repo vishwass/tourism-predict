@@ -9,5 +9,8 @@ api = HfApi(token=tok)
 repo_id = "Cruise949/tourism-predict"
 repo_type = "space"
 foldername = "tourism_project/deployment"
-api.create_repo(repo_id=repo_id, repo_type=repo_type)
+api.upload_folder(repo_id=repo_id,
+                repo_type=repo_type,
+                folder_path=foldername)
+
 

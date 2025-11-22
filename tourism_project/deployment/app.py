@@ -58,10 +58,10 @@ if st.button("Predict"):
   prediction = model.predict(data)[0,1]
   pred = if (prediction == 1 ) "purchase" else "not purchase"
   st.write("Based on the prediction, the customer will", pred,"the travel product")
-  
 
 
-                                          
+
+
 
 
 
