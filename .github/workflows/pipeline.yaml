@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main  # Automatically triggers on push to the main branch
+    paths-ignore:
+      - '**/README.md'
 
 jobs:
 
