@@ -1,1 +1,1 @@
-App hosted url : https://huggingface.co/spaces/Cruise949/tourism-predict
+Huggingface hosted url : https://huggingface.co/spaces/Cruise949/tourism-predict
